@@ -147,26 +147,27 @@ jobs:
         ${{ parameters.sairedis_artifact_pattern }}/libsaimetadata-dev_*.deb
         ${{ parameters.sairedis_artifact_pattern }}/syncd-vs_*.deb
     displayName: "Download sonic sairedis deb packages"
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      source: specific
-      project: ${{ parameters.common_lib_artifact_project }}
-      pipeline: ${{ parameters.common_lib_artifact_pipeline }}
-      artifact: ${{ parameters.common_lib_artifact_name }}
-      runVersion: 'latestFromBranch'
-      runBranch: 'refs/heads/${{ parameters.common_lib_artifact_branch }}'
-      path: $(Build.ArtifactStagingDirectory)/download/common
-      patterns: |
-        target/debs/bookworm/libnl-3-200_*.deb
-        target/debs/bookworm/libnl-3-dev_*.deb
-        target/debs/bookworm/libnl-genl-3-200_*.deb
-        target/debs/bookworm/libnl-genl-3-dev_*.deb
-        target/debs/bookworm/libnl-route-3-200_*.deb
-        target/debs/bookworm/libnl-route-3-dev_*.deb
-        target/debs/bookworm/libnl-nf-3-200_*.deb
-        target/debs/bookworm/libnl-nf-3-dev_*.deb
-        target/debs/bookworm/libyang_*.deb
-    displayName: "Download common libs"
+  # External pipeline download commented out - pipeline not available in Cisco-SONiC-PoC org
+  # - task: DownloadPipelineArtifact@2
+  #   inputs:
+  #     source: specific
+  #     project: ${{ parameters.common_lib_artifact_project }}
+  #     pipeline: ${{ parameters.common_lib_artifact_pipeline }}
+  #     artifact: ${{ parameters.common_lib_artifact_name }}
+  #     runVersion: 'latestFromBranch'
+  #     runBranch: 'refs/heads/${{ parameters.common_lib_artifact_branch }}'
+  #     path: $(Build.ArtifactStagingDirectory)/download/common
+  #     patterns: |
+  #       target/debs/bookworm/libnl-3-200_*.deb
+  #       target/debs/bookworm/libnl-3-dev_*.deb
+  #       target/debs/bookworm/libnl-genl-3-200_*.deb
+  #       target/debs/bookworm/libnl-genl-3-dev_*.deb
+  #       target/debs/bookworm/libnl-route-3-200_*.deb
+  #       target/debs/bookworm/libnl-route-3-dev_*.deb
+  #       target/debs/bookworm/libnl-nf-3-200_*.deb
+  #       target/debs/bookworm/libnl-nf-3-dev_*.deb
+  #       target/debs/bookworm/libyang_*.deb
+  #   displayName: "Download common libs"
   # External pipeline download commented out - pipeline not available in Cisco-SONiC-PoC org
   # - task: DownloadPipelineArtifact@2
   #   inputs:
@@ -183,13 +184,14 @@ jobs:
   #     patterns: |
   #       libdashapi*.deb
   #   displayName: "Download dash api"
-  - script: |
-      set -ex
-      cd download
-      sudo dpkg -i $(find common -type f -name '*.deb')
-      cd ..
-    workingDirectory: $(Build.ArtifactStagingDirectory)
-    displayName: "Install libnl3"
+  # Install libnl3 commented out - depends on common_libs download which is not available
+  # - script: |
+  #     set -ex
+  #     cd download
+  #     sudo dpkg -i $(find common -type f -name '*.deb')
+  #     cd ..
+  #   workingDirectory: $(Build.ArtifactStagingDirectory)
+  #   displayName: "Install libnl3"
   # External pipeline downloads commented out - pipelines not available in Cisco-SONiC-PoC org
   # - task: DownloadPipelineArtifact@2
   #   inputs:
