@@ -105,21 +105,22 @@ jobs:
         ${{ parameters.sairedis_artifact_pattern }}/libsaimetadata-dev_*.deb
         ${{ parameters.sairedis_artifact_pattern }}/syncd-vs_*.deb
     displayName: "Download sonic sairedis deb packages"
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      source: specific
-      project: build
-      pipeline: sonic-net.sonic-dash-api
-      ${{ if eq(parameters.arch, 'amd64') }}:
-        artifact: sonic-dash-api
-      ${{ else }}:
-        artifact: sonic-dash-api.${{ parameters.arch }}
-      runVersion: 'latestFromBranch'
-      runBranch: 'refs/heads/$(BUILD_BRANCH)'
-      path: $(Build.ArtifactStagingDirectory)/download
-      patterns: |
-        libdashapi*.deb
-    displayName: "Download dash api"
+  # External pipeline download commented out - pipeline not available in Cisco-SONiC-PoC org
+  # - task: DownloadPipelineArtifact@2
+  #   inputs:
+  #     source: specific
+  #     project: build
+  #     pipeline: sonic-net.sonic-dash-api
+  #     ${{ if eq(parameters.arch, 'amd64') }}:
+  #       artifact: sonic-dash-api
+  #     ${{ else }}:
+  #       artifact: sonic-dash-api.${{ parameters.arch }}
+  #     runVersion: 'latestFromBranch'
+  #     runBranch: 'refs/heads/$(BUILD_BRANCH)'
+  #     path: $(Build.ArtifactStagingDirectory)/download
+  #     patterns: |
+  #       libdashapi*.deb
+  #   displayName: "Download dash api"
   - task: DownloadPipelineArtifact@2
     inputs:
       artifact: ${{ parameters.swss_artifact_name }}
@@ -147,18 +148,19 @@ jobs:
       path: $(Build.ArtifactStagingDirectory)/download
       patterns: '**/target/debs/${{ parameters.debian_version }}/framework_*.deb'
     displayName: "Download sonic-buildimage sonic-framework package"
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      source: specific
-      project: build
-      pipeline: sonic-net.sonic-platform-vpp
-      artifact: vpp
-      runVersion: 'latestFromBranch'
-      runBranch: 'refs/heads/main'
-      allowPartiallySucceededBuilds: true
-      path: $(Build.ArtifactStagingDirectory)/download
-    displayName: "Download sonic platform-vpp deb packages"
-    condition: eq('${{ parameters.arch }}', 'amd64')
+  # External pipeline download commented out - pipeline not available in Cisco-SONiC-PoC org
+  # - task: DownloadPipelineArtifact@2
+  #   inputs:
+  #     source: specific
+  #     project: build
+  #     pipeline: sonic-net.sonic-platform-vpp
+  #     artifact: vpp
+  #     runVersion: 'latestFromBranch'
+  #     runBranch: 'refs/heads/main'
+  #     allowPartiallySucceededBuilds: true
+  #     path: $(Build.ArtifactStagingDirectory)/download
+  #   displayName: "Download sonic platform-vpp deb packages"
+  #   condition: eq('${{ parameters.arch }}', 'amd64')
   - script: |
       set -ex
       echo $(Build.DefinitionName).$(Build.BuildNumber)
