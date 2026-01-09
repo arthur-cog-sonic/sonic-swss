@@ -167,21 +167,22 @@ jobs:
         target/debs/bookworm/libnl-nf-3-dev_*.deb
         target/debs/bookworm/libyang_*.deb
     displayName: "Download common libs"
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      source: specific
-      project: build
-      pipeline: sonic-net.sonic-dash-api
-      ${{ if eq(parameters.arch, 'amd64') }}:
-        artifact: sonic-dash-api
-      ${{ else }}:
-        artifact: sonic-dash-api.${{ parameters.arch }}
-      runVersion: 'latestFromBranch'
-      runBranch: 'refs/heads/$(BUILD_BRANCH)'
-      path: $(Build.ArtifactStagingDirectory)/download/common
-      patterns: |
-        libdashapi*.deb
-    displayName: "Download dash api"
+  # External pipeline download commented out - pipeline not available in Cisco-SONiC-PoC org
+  # - task: DownloadPipelineArtifact@2
+  #   inputs:
+  #     source: specific
+  #     project: build
+  #     pipeline: sonic-net.sonic-dash-api
+  #     ${{ if eq(parameters.arch, 'amd64') }}:
+  #       artifact: sonic-dash-api
+  #     ${{ else }}:
+  #       artifact: sonic-dash-api.${{ parameters.arch }}
+  #     runVersion: 'latestFromBranch'
+  #     runBranch: 'refs/heads/$(BUILD_BRANCH)'
+  #     path: $(Build.ArtifactStagingDirectory)/download/common
+  #     patterns: |
+  #       libdashapi*.deb
+  #   displayName: "Download dash api"
   - script: |
       set -ex
       cd download
@@ -189,33 +190,34 @@ jobs:
       cd ..
     workingDirectory: $(Build.ArtifactStagingDirectory)
     displayName: "Install libnl3"
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      source: specific
-      project: build
-      pipeline: sonic-net.sonic-platform-vpp
-      artifact: vpp
-      runVersion: 'latestFromBranch'
-      runBranch: 'refs/heads/main'
-      allowPartiallySucceededBuilds: true
-      path: $(Build.ArtifactStagingDirectory)/download
-    displayName: "Download sonic platform-vpp deb packages"
-    condition: eq('${{ parameters.arch }}', 'amd64')
-  - script: |
-      set -ex
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/libvppinfra-dev_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/libvppinfra_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-crypto-engines_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-dbg_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-dev_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-plugin-core_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-plugin-devtools_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-plugin-dpdk_*_${{ parameters.arch }}.deb
-      sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/python3-vpp-api_*_${{ parameters.arch }}.deb
-    workingDirectory: $(Build.ArtifactStagingDirectory)
-    displayName: "Install sonic platform-vpp packages"
-    condition: eq('${{ parameters.arch }}', 'amd64')
+  # External pipeline downloads commented out - pipelines not available in Cisco-SONiC-PoC org
+  # - task: DownloadPipelineArtifact@2
+  #   inputs:
+  #     source: specific
+  #     project: build
+  #     pipeline: sonic-net.sonic-platform-vpp
+  #     artifact: vpp
+  #     runVersion: 'latestFromBranch'
+  #     runBranch: 'refs/heads/main'
+  #     allowPartiallySucceededBuilds: true
+  #     path: $(Build.ArtifactStagingDirectory)/download
+  #   displayName: "Download sonic platform-vpp deb packages"
+  #   condition: eq('${{ parameters.arch }}', 'amd64')
+  # - script: |
+  #     set -ex
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/libvppinfra-dev_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/libvppinfra_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-crypto-engines_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-dbg_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-dev_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-plugin-core_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-plugin-devtools_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/vpp-plugin-dpdk_*_${{ parameters.arch }}.deb
+  #     sudo env VPP_INSTALL_SKIP_SYSCTL=1 dpkg -i download/python3-vpp-api_*_${{ parameters.arch }}.deb
+  #   workingDirectory: $(Build.ArtifactStagingDirectory)
+  #   displayName: "Install sonic platform-vpp packages"
+  #   condition: eq('${{ parameters.arch }}', 'amd64')
   - script: |
       set -ex
       cd download
